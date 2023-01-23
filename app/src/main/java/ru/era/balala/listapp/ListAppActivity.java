@@ -13,8 +13,6 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import ru.era.balala.R;
-
 public class ListAppActivity extends ListActivity {
 
     private ProgressDialog progressDialog;
@@ -30,11 +28,14 @@ public class ListAppActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         packageManager = getPackageManager();
 
+        listadapter = new AppAdapter(ListAppActivity.this);
+        setListAdapter(listadapter);
+
         new LoadApplicationsAsync(packageManager, new LoadApplicationsAsync.ICallback() {
             @Override
             public void returnList(List<ApplicationInfo> applist) {
-                listadapter = new AppAdapter(ListAppActivity.this, R.layout.list_item, applist);
-                setListAdapter(listadapter);
+                listadapter.addAll(applist);
+                listadapter.notifyDataSetChanged();
 
                 progressDialog.dismiss();
             }

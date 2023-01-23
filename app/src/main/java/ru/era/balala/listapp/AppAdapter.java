@@ -10,36 +10,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
-
 import ru.era.balala.R;
 
-public class AppAdapter extends ArrayAdapter {
-    private List appList;
+public class AppAdapter extends ArrayAdapter<ApplicationInfo> {
     private final Context context;
     private final PackageManager packageManager;
 
-    public AppAdapter(Context context, int resource, List objects) {
-        super(context, resource, objects);
+    public AppAdapter(Context context) {
+        super(context, -1);
 
         this.context = context;
-        this.appList = objects;
         this.packageManager = context.getPackageManager();
-    }
-
-    @Override
-    public int getCount() {
-        return ((null != appList) ? appList.size() : 0);
-    }
-
-    @Override
-    public ApplicationInfo getItem(int position) {
-        return ((null != appList) ? (ApplicationInfo) appList.get(position) : null);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
     }
 
     @Override
@@ -52,7 +33,7 @@ public class AppAdapter extends ArrayAdapter {
             view = layoutInflater.inflate(R.layout.list_item, null);
         }
 
-        ApplicationInfo data = (ApplicationInfo) appList.get(position);
+        ApplicationInfo data = (ApplicationInfo) getItem(position);
 
         if (null != data) {
             TextView appName = (TextView) view.findViewById(R.id.app_name);
