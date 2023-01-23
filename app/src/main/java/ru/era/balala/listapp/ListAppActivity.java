@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -16,7 +15,6 @@ import java.util.List;
 public class ListAppActivity extends ListActivity {
 
     private ProgressDialog progressDialog;
-    private PackageManager packageManager;
     private AppAdapter listadapter;
 
     public static Intent buildIntent(Context context) {
@@ -26,12 +24,11 @@ public class ListAppActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        packageManager = getPackageManager();
 
         listadapter = new AppAdapter(ListAppActivity.this);
         setListAdapter(listadapter);
 
-        new LoadApplicationsAsync(packageManager, new LoadApplicationsAsync.ICallback() {
+        new LoadApplicationsAsync(this, new LoadApplicationsAsync.ICallback() {
             @Override
             public void returnList(List<ApplicationInfo> applist) {
                 listadapter.addAll(applist);
@@ -54,7 +51,7 @@ public class ListAppActivity extends ListActivity {
         ApplicationInfo app = listadapter.getItem(position);
 
         try {
-            Intent intent = packageManager.getLaunchIntentForPackage(app.packageName);
+            Intent intent = getPackageManager().getLaunchIntentForPackage(app.packageName);
 
             if (intent != null) {
                 startActivity(intent);

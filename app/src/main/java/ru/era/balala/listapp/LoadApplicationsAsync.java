@@ -1,5 +1,6 @@
 package ru.era.balala.listapp;
 
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -13,8 +14,8 @@ public class LoadApplicationsAsync extends AsyncTask<Void, Void, Void> {
     private final PackageManager packageManager;
     private final ICallback callback;
 
-    public LoadApplicationsAsync(PackageManager packageManager, ICallback callback) {
-        this.packageManager = packageManager;
+    public LoadApplicationsAsync(Context context, ICallback callback) {
+        this.packageManager = context.getPackageManager();
         this.callback = callback;
     }
 
