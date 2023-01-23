@@ -1,22 +1,20 @@
 package ru.era.balala;
 
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import ru.era.balala.databinding.ActivityMainBinding;
+import com.google.android.material.snackbar.Snackbar;
 
-import android.view.Menu;
-import android.view.MenuItem;
+import ru.era.balala.databinding.ActivityMainBinding;
+import ru.era.balala.listapp.ListAppActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        startActivity(ListAppActivity.buildIntent(this));
     }
 
     @Override
