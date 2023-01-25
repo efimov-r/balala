@@ -1,5 +1,6 @@
 package ru.era.balala;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("ru.era.balala.service");
+        // Запуск из нужного места без предыстории приложения
+        launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(launchIntent);
 
         startActivity(ListAppActivity.buildIntent(this));
     }
