@@ -1,8 +1,8 @@
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
     android:accessibilityEventTypes="typeAllMask"
-    android:accessibilityFeedbackType="feedbackGeneric"
-    android:accessibilityFlags="flagIncludeNotImportantViews|flagRequestFilterKeyEvents"
-    android:settingsActivity="ru.atic.autodroid.StartScreen"
+    android:accessibilityFeedbackType="feedbackAllMask"
+    android:accessibilityFlags="flagIncludeNotImportantViews|flagRequestFilterKeyEvents|flagDefault|flagReportViewIds"
+    android:settingsActivity="ru.era.balala.MainActivity"
     android:canRetrieveWindowContent="true"
     android:canRequestTouchExplorationMode="true"
     android:canRequestFilterKeyEvents="true" />

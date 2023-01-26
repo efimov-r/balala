@@ -1,11 +1,18 @@
 package ru.era.balala;
 
+import android.accessibilityservice.AccessibilityServiceInfo;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -16,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import ru.era.balala.databinding.ActivityMainBinding;
 import ru.era.balala.listapp.ListAppActivity;
+import ru.era.balala.service.MyAccessibilityService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,12 +51,54 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("ru.era.balala.service");
+//        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("ru.era.balala.service");
+        Intent launchIntent = new Intent(this, MyAccessibilityService.class);
         // Запуск из нужного места без предыстории приложения
         launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(launchIntent);
+        startService(launchIntent);
 
-        startActivity(ListAppActivity.buildIntent(this));
+        String mess = "";
+        if (checkAccess()) {
+            mess = "perm is ok";
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    mess, Toast.LENGTH_SHORT);
+            toast.show();
+            startActivity(ListAppActivity.buildIntent(this));
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("not perm");
+            builder.setMessage("to sitting?");
+            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() { // Кнопка ОК
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                    startActivityForResult(intent, 0);
+                }
+            });
+            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    startActivity(ListAppActivity.buildIntent(getContext()));
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+
+    }
+
+    public Context getContext() {
+        return this;
+    }
+
+    protected boolean checkAccess() {
+        String string = "ru.era.balala/.service.MyAccessibilityService";
+        for (AccessibilityServiceInfo id : ((AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE)).getEnabledAccessibilityServiceList(AccessibilityEvent.TYPES_ALL_MASK)) {
+            if (string.equals(id.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

@@ -1,9 +1,13 @@
 package ru.era.balala;
 
+import android.accessibilityservice.AccessibilityServiceInfo;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -26,8 +30,15 @@ public class FirstFragment extends Fragment {
 
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        String text = "";
+
+        for (AccessibilityServiceInfo id : ((AccessibilityManager) getActivity().getSystemService(Context.ACCESSIBILITY_SERVICE)).getEnabledAccessibilityServiceList(AccessibilityEvent.TYPES_ALL_MASK)) {
+            text += " !!! " + id;
+        }
+        binding.textviewFirst.setText(text);
 
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override

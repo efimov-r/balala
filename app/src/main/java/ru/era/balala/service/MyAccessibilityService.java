@@ -3,6 +3,7 @@ package ru.era.balala.service;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.Toast;
 
 public class MyAccessibilityService extends android.accessibilityservice.AccessibilityService {
 
@@ -10,7 +11,7 @@ public class MyAccessibilityService extends android.accessibilityservice.Accessi
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
-        
+
     }
 
     @Override
@@ -25,6 +26,10 @@ public class MyAccessibilityService extends android.accessibilityservice.Accessi
                 "; scan code = " + event.getScanCode() +
                 "; meta state = " + event.getMetaState() +
                 "; key = " + event.getNumber());
+
+        Toast toast = Toast.makeText(getApplicationContext(),
+                "key code = " + event.getKeyCode(), Toast.LENGTH_SHORT);
+        toast.show();
 //        int keyCode = event.getKeyCode();
 //        switch (keyCode) {
 //            case 8:
